@@ -1,0 +1,11 @@
+# Default values for cluster-charts.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://github.com/kulmam92/aks-argocd-bootstrap.git
+    targetRevision: HEAD

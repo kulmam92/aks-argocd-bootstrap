@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: k8s-config
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: default
+    server: {{ .Values.spec.destination.server }}
+  project: {{ .Values.spec.project }}
+  source:
+    repoURL: {{ .Values.spec.source.repoURL }}
+    targetRevision: {{ .Values.spec.source.targetRevision }}
+    path: applications/k8s-config
+    helm:
+      parameters:
+      - name:  hosts
+        value: {{ .Values.hosts }}
+      - name: acme_email
+        value: {{ .Values.acme_email }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    validate: true

@@ -1,0 +1,4 @@
+cluster: https://kubernetes.default.svc
+project: default
+csi-secrets-store-provider-azure:
+  enabled: true

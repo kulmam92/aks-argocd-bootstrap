@@ -1,0 +1,57 @@
+# https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
+# https://github.com/helm/charts/issues/11471 - path based routing
+# https://medium.com/zolo-engineering/configuring-prometheus-operator-helm-chart-with-aws-eks-c12fac3b671a - EKS
+cluster: https://kubernetes.default.svc
+project: default
+kube-prometheus-stack:
+  enabled: true
+  # Forcing Kubelet metrics scraping on http
+  kubelet:
+    enabled: true
+    serviceMonitor:
+      https: false
+  # Disabling scraping of Master Nodes Components
+  kubeControllerManager:
+    enabled: false
+  kubeScheduler:
+    enabled: false
+  kubeEtcd:
+    enabled: false
+  kubeProxy:
+    enabled: false
+  prometheusOperator:
+    # https://github.com/prometheus-community/helm-charts/issues/418
+    tls:
+      enabled: false
+    admissionWebhooks:
+      enabled: false
+  # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/templates/alertmanager/alertmanager.yaml
+  alertmanager:
+    enabled: true
+    alertmanagerSpec:
+      # externalUrl: https://{{ .Values.hosts }}/alerts/
+      routePrefix: /alerts/
+    # in-line ingress setting didn't work. So create a seperate ingress setting in the templates folder
+    ingress:
+      enabled: false
+  prometheus:
+    enabled: true
+    prometheusSpec:
+      # externalUrl: https://{{ .Values.hosts }}/prometheus/
+      routePrefix: /prometheus/
+      enable-lifecycle: "true"
+    # in-line ingress setting didn't work. So create a seperate ingress setting in the templates folder
+    ingress:
+      enabled: false
+    # thanosIngress:
+    #   enabled: true
+  grafana:
+    enabled: true
+    grafana.ini:
+      server:
+        # root_url: https://{{ .Values.hosts }}/grafana/
+        serve_from_sub_path: true
+    ingress:
+      enabled: false
+    plugins:
+    - grafana-piechart-panel

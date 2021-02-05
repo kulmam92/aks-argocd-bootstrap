@@ -1,0 +1,27 @@
+---
+apiVersion: spv.no/v1
+kind: AzureKeyVaultSecret
+metadata:
+  name: kube-prometheus-basic-auth
+  namespace: monitoring
+  labels:
+    app: kube-prometheus-stack-prometheus
+    app.kubernetes.io/managed-by: Helm
+    heritage: Helm
+    release: kube-prometheus-stack
+    self-monitor: "true"
+  annotations:
+    meta.helm.sh/release-name: kube-prometheus-stack
+    meta.helm.sh/release-namespace: monitoring
+spec:
+  vault:
+    name: kv-azusw2-trf-dv-01 # name of key vault
+    object:
+      # secret should be in the output of htpasswd -c auth admin
+      name: PROMETHEUS-BASIC-AUTH # name of the akv object
+      type: secret # akv object type
+  output:
+    secret:
+      name: basic-auth # kubernetes secret name
+      dataKey: auth # key to store object value in kubernetes secret
+---

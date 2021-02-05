@@ -1,0 +1,14 @@
+# https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
+cluster: https://kubernetes.default.svc
+project: default
+minio:
+  enabled: true
+  existingSecret: minio-azure-storage-secret
+  azuregateway:
+    enabled: true
+  persistence:
+    enabled: false
+  defaultBucket:
+    enabled: true
+    name: default
+  fullnameOverride: minio

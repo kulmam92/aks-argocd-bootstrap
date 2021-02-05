@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kube-prometheus-stack-grafana
+  labels:
+    app: kube-prometheus-stack-grafana
+    app.kubernetes.io/managed-by: Helm
+    heritage: Helm
+    release: kube-prometheus-stack
+    self-monitor: "true"
+  annotations:
+    meta.helm.sh/release-name: kube-prometheus-stack
+    meta.helm.sh/release-namespace: monitoring
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /grafana/$2
+    # cert-manager.io/cluster-issuer: letsencrypt-prod
+    # kubernetes.io/tls-acme: "true"
+spec:
+  rules:
+  - http:
+      paths:
+        - path: /grafana(/|$)(.*)
+          pathType: Prefix
+          backend:
+            service:
+              name: kube-prometheus-stack-grafana
+              port:
+                number: 80
+    host: {{ .Values.hosts }}
+  # tls:
+  # - secretName: grafana-general-tls
+  #   hosts:
+  #   - {{ .Values.hosts }}

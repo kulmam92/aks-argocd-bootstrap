@@ -1,0 +1,11 @@
+apiVersion: v2
+name: csi-secrets-store-provider-azure-app
+description: install and configure csi-secrets-store-provider-azure
+type: application
+version: 0.1.0
+appVersion: 1.0
+dependencies:
+- name: csi-secrets-store-provider-azure
+  version: 0.0.15
+  repository: https://raw.githubusercontent.com/Azure/secrets-store-csi-driver-provider-azure/master/charts
+  condition: csi-secrets-store-provider-azure.enabled

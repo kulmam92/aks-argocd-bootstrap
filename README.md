@@ -5,5 +5,6 @@ This is used by a Terraform script in [kulmam92/azure-terraform-modules/tree/mai
 
 ## Diagram
 This is what you will be getting.
+
 <a href="url"><img src="docs/images/03.AKS-architecture.png" align="middle" height="210" width="450" ></a>
 
